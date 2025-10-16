@@ -1,6 +1,5 @@
 # Нестеров И.С. Лаба третья
-# Метод Гаусса с оптимальным исключением (Гаусса-Жордана)
-# По выводам видно будет, что приводил к единичной диагональной матрице
+# Метод Гаусса с оптимальным исключением
 from copy import deepcopy
 from scipy import linalg
 
@@ -48,17 +47,24 @@ def main():
             print(f"Итерация {k+1}: перестановка столбцов {k+1} <-> {max_j+1}")
             print(f"Теперь порядок переменных: {[f'x{i+1}' for i in variable_order]}")
 
+        for j in range(k):
+            factor = matrix[k][j]
+            for col in range(k, n):
+                matrix[k][col] -= factor * matrix[j][col]
+            b[k] -= factor * b[j]
+            matrix[k][j] = 0.0
+
         pivot = matrix[k][k]
         for j in range(k, n):
             matrix[k][j] /= pivot
         b[k] /= pivot
 
-        for i in range(n):
-            if i != k:
-                factor = matrix[i][k]
-                for j in range(k, n):
-                    matrix[i][j] -= factor * matrix[k][j]
-                b[i] -= factor * b[k]
+        for i in range(k):
+            factor = matrix[i][k]
+            for j in range(k, n):
+                matrix[i][j] -= factor * matrix[k][j]
+            b[i] -= factor * b[k]
+            matrix[i][k] = 0.0
 
         print(f"\nМатрица после итерации {k + 1}:")
         for row in range(n):

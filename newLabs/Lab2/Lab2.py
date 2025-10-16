@@ -23,7 +23,7 @@ def main():
         max_col_ind = iter
         max_col_el = matrix[iter][iter]
         for row in range(iter, n):
-            if max_col_el < matrix[row][iter]:
+            if abs(max_col_el) < abs(matrix[row][iter]):
                 max_col_ind = row
                 max_col_el = matrix[max_col_ind][iter]  
         
@@ -59,6 +59,7 @@ def main():
         result = 0
         for j in range(n):
             result += original_matrix[i][j] * x[j]
-        print(f"Уравнение {i+1}: {result} = {original_b[i]}")
+        error = abs(result - original_b[i])
+        print(f"Уравнение {i+1}: {result:.6f} = {original_b[i]:.6f} (ошибка: {error:.2e})")
 
 main()
